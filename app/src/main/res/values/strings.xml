@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">UpperSports</string>
+    <string name="label_home">Home</string>
+    <string name="label_leagues">Leagues</string>
 </resources>

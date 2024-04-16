@@ -1,11 +1,21 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
 }
 
+val properties = Properties()
+properties.load(rootProject.file("local.properties").inputStream())
+val apiKeySports = properties["API_SPORTS_API_KEY"].toString()
+
 android {
     namespace = "br.com.joaovq.uppersports"
     compileSdk = 34
+
+    /*signingConfigs {
+
+    }*/
 
     defaultConfig {
         applicationId = "br.com.joaovq.uppersports"
@@ -22,11 +32,16 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isDebuggable = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+        debug {
+            isDebuggable = true
+            buildConfigField("String", "API_KEY_SPORTS", apiKeySports)
         }
     }
     compileOptions {
@@ -45,7 +60,7 @@ android {
     }
     packaging {
         resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/{AL2.0,LGPL2.1,DEPENDENCIES,INDEX.LIST}"
         }
     }
 }
@@ -68,6 +83,8 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+    val navVersion = "2.7.7"
+    implementation("androidx.navigation:navigation-compose:$navVersion")
 
     implementation("androidx.core:core-splashscreen:1.1.0-rc01")
     implementation("androidx.compose.ui:ui-text-google-fonts:1.6.5")
@@ -83,4 +100,13 @@ dependencies {
     testImplementation("io.insert-koin:koin-android-test")
 
     implementation("com.jakewharton.timber:timber:5.0.1")
+    val ktorVersion = "2.3.10"
+    implementation("io.ktor:ktor-client-core:$ktorVersion")
+    implementation("io.ktor:ktor-client-cio:$ktorVersion")
+    testImplementation("io.ktor:ktor-client-mock:$ktorVersion")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-gson:$ktorVersion")
+   /* implementation("io.ktor:ktor-client-logging:$ktorVersion")
+    implementation("ch.qos.logback:logback-classic:1.5.4")*/
+    implementation("io.coil-kt:coil-compose:2.6.0")
 }
