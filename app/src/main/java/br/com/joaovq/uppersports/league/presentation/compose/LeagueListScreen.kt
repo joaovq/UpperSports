@@ -1,5 +1,6 @@
 package br.com.joaovq.uppersports.league.presentation.compose
 
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,6 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -55,6 +57,7 @@ fun LeagueListScreen(
     isLoading: Boolean = false,
     leagues: List<LeagueResponse>,
     onEvent: (LeagueListEvent) -> Unit,
+    onNavigateToLeague: (id: Int) -> Unit,
     state: LeagueListState
 ) {
     val spacing = LocalSpacing.current
@@ -122,6 +125,13 @@ fun LeagueListScreen(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .pointerInput(Unit) {
+                                detectTapGestures(
+                                    onTap = {
+                                        onNavigateToLeague(leagueResponse.league.id)
+                                    }
+                                )
+                            }
                             .padding(spacing.default),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
@@ -202,7 +212,8 @@ fun LeagueListPreview(
         LeagueListScreen(
             leagues = leagues,
             onEvent = {},
-            state = LeagueListState()
+            state = LeagueListState(),
+            onNavigateToLeague = {}
         )
     }
 }

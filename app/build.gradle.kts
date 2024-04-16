@@ -109,4 +109,5 @@ dependencies {
    /* implementation("io.ktor:ktor-client-logging:$ktorVersion")
     implementation("ch.qos.logback:logback-classic:1.5.4")*/
     implementation("io.coil-kt:coil-compose:2.6.0")
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
 }

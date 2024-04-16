@@ -46,7 +46,8 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun OnboardingScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onNavigateToLeague: (id: Int) -> Unit = {}
 ) {
     val spacing = LocalSpacing.current
     val drawerState = rememberDrawerState(
@@ -147,10 +148,11 @@ fun OnboardingScreen(
                     val leagueListViewModel = koinViewModel<LeagueListViewModel>()
                     LeagueListScreen(
                         modifier = Modifier.padding(innerPadding),
-                        leagueListViewModel.isLoading,
+                        onNavigateToLeague = onNavigateToLeague,
                         leagues = leagueListViewModel.paginatedLeagueResponse?.response.orEmpty(),
-                        leagueListViewModel::onEvent,
-                        leagueListViewModel.state
+                        isLoading = leagueListViewModel.isLoading,
+                        onEvent = leagueListViewModel::onEvent,
+                        state = leagueListViewModel.state,
                     )
                 }
             }

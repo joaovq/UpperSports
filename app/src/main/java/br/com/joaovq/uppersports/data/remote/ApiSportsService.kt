@@ -36,7 +36,30 @@ class ApiSportsService(httpClient: HttpClient) {
             log.i("Request time ${it.requestTime}")
             log.i("Response time ${it.responseTime}")
         }
+    }
 
+    suspend fun getLeagueById(id: Int = 0): NetworkResponse<PaginatedResponse<LeagueResponse>> {
+        val httpResponse = sportsClient.get("leagues") {
+            parameter("id", id)
+        }
+        return try {
+            when (httpResponse.status) {
+                HttpStatusCode.OK -> {
+                    log.i("Body: ${httpResponse.body<String>()}")
+                    NetworkResponse.Success(httpResponse.body())
+                }
+
+                HttpStatusCode.BadRequest -> {
+                    log.e("Body: ${httpResponse.body<String>()}")
+                    NetworkResponse.BadRequest(httpResponse.body())
+                }
+
+                else -> NetworkResponse.InternalServerError("Internal server error")
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            NetworkResponse.Error(e)
+        }
     }
 
     suspend fun getAllLeagues(
