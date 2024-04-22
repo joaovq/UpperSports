@@ -9,7 +9,7 @@
         <item name="windowSplashScreenBackground">@color/black200</item>
         <!-- Use windowSplashScreenAnimatedIcon to add a drawable or an animated
              drawable. -->
-        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_round</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_screen</item>
         <!-- Set the theme of the Activity that follows your splash screen. -->
         <item name="postSplashScreenTheme">@style/Theme.UpperSports</item>
     </style>

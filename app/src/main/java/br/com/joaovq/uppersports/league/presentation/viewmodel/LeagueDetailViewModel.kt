@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.joaovq.uppersports.core.utils.http.NetworkResponse
 import br.com.joaovq.uppersports.league.data.remote.model.League
+import br.com.joaovq.uppersports.league.data.remote.model.LeagueResponse
 import br.com.joaovq.uppersports.league.domain.usecase.GetLeagueById
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,7 +19,7 @@ class LeagueDetailViewModel(
 ) : ViewModel() {
     private val log = Timber.tag(this::class.java.simpleName)
 
-    var league: League? by mutableStateOf(null)
+    var league: LeagueResponse? by mutableStateOf(null)
         private set
 
     fun getLeague(id: Int) {
@@ -26,7 +27,7 @@ class LeagueDetailViewModel(
             getLeagueById(id).let { networkResponse ->
                 when (networkResponse) {
                     is NetworkResponse.Success -> {
-                        league = networkResponse.data.response.firstOrNull()?.league
+                        league = networkResponse.data.response.firstOrNull()
                     }
 
                     else -> {

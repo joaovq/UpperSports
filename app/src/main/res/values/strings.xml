@@ -2,4 +2,5 @@
     <string name="app_name">UpperSports</string>
     <string name="label_home">Home</string>
     <string name="label_leagues">Leagues</string>
+    <string name="select_your_favorite_team">Select your favorite team</string>
 </resources>
