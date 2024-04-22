@@ -59,14 +59,10 @@ class LeagueListViewModel(
         getLeagues()
     }
 
-    /*init {
-        getLeagues()
-    }*/
-
     private fun getLeagues() {
         searchScopeJob?.cancel()
         searchScopeJob = viewModelScope.launch {
-            delay(100)
+            delay(400)
             try {
                 isLoading = true
                 getAllLeagues(state.query.text, state.type).apply {
