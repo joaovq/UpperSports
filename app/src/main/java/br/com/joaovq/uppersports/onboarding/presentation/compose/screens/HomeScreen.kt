@@ -24,6 +24,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import br.com.joaovq.uppersports.data.remote.FixtureResponse
 import br.com.joaovq.uppersports.onboarding.presentation.compose.components.LiveBall
+import br.com.joaovq.uppersports.ui.theme.LocalSpacing
 import br.com.joaovq.uppersports.ui.utils.shimmerEffect
 import coil.compose.AsyncImage
 
@@ -34,6 +35,7 @@ fun HomeScreen(
     fixtureResponse: List<FixtureResponse>? = null,
     isLoading: Boolean = false
 ) {
+    val spacing = LocalSpacing.current
     if (isLoading) {
         LazyColumn(
             modifier = modifier
@@ -64,7 +66,7 @@ fun HomeScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        modifier = Modifier.padding(horizontal = 10.dp),
+                        modifier = Modifier.padding(horizontal = spacing.small),
                         text = "Live",
                         style = MaterialTheme.typography.titleSmall,
                         color = MaterialTheme.colorScheme.primary
@@ -81,7 +83,7 @@ fun HomeScreen(
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 10.dp, horizontal = 4.dp),
+                        .padding(vertical = spacing.small, horizontal = 4.dp),
                     /*colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.surface.copy(.8f),
                         contentColor = MaterialTheme.colorScheme.tertiary
@@ -89,7 +91,7 @@ fun HomeScreen(
                 ) {
                     Row(
                         modifier = Modifier
-                            .padding(10.dp)
+                            .padding(spacing.small)
                             .fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(
                             10.dp,
