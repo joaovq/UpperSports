@@ -93,4 +93,28 @@ class ApiSportsService(httpClient: HttpClient) {
             NetworkResponse.Error(e)
         }
     }
+
+    suspend fun getLiveFixtures(): NetworkResponse<PaginatedResponse<FixtureResponse>> {
+        val httpResponse = sportsClient.get("fixtures") {
+            parameter("live", "all")
+        }
+        return try {
+            when (httpResponse.status) {
+                HttpStatusCode.OK -> {
+                    log.i("Body: ${httpResponse.body<String>()}")
+                    NetworkResponse.Success(httpResponse.body())
+                }
+
+                HttpStatusCode.BadRequest -> {
+                    log.e("Body: ${httpResponse.body<String>()}")
+                    NetworkResponse.BadRequest(httpResponse.body())
+                }
+
+                else -> NetworkResponse.InternalServerError("Internal server error")
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            NetworkResponse.Error(e)
+        }
+    }
 }

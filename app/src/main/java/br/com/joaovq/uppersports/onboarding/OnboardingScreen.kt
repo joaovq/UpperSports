@@ -3,14 +3,15 @@ package br.com.joaovq.uppersports.onboarding
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.DismissibleNavigationDrawer
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
@@ -25,11 +26,14 @@ import androidx.navigation.compose.rememberNavController
 import br.com.joaovq.uppersports.league.presentation.components.OnboardingDrawerSheet
 import br.com.joaovq.uppersports.league.presentation.compose.LeagueListScreen
 import br.com.joaovq.uppersports.league.presentation.viewmodel.LeagueListViewModel
+import br.com.joaovq.uppersports.onboarding.presentation.compose.screens.HomeScreen
+import br.com.joaovq.uppersports.onboarding.presentation.viewmodel.FixturesViewModel
 import br.com.joaovq.uppersports.ui.components.UpperSportsTopBar
 import br.com.joaovq.uppersports.ui.theme.UpperSportsTheme
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnboardingScreen(
     modifier: Modifier = Modifier,
@@ -78,16 +82,12 @@ fun OnboardingScreen(
                 exitTransition = { ExitTransition.None },
             ) {
                 composable("home") {
-                    LazyColumn(modifier = Modifier.padding(innerPadding)) {
-                        item {
-                            /*Text(
-                                modifier = Modifier.padding(spacing.default),
-                                text = "Today match's",
-                                color = MaterialTheme.colorScheme.primary,
-                                style = MaterialTheme.typography.titleLarge
-                            )*/
-                        }
-                    }
+                    val viewModel = koinViewModel<FixturesViewModel>()
+                    val isLoading by viewModel.isLoading.collectAsState()
+                    HomeScreen(
+                        isLoading = isLoading,
+                        fixtureResponse = viewModel.fixtureResponse
+                    )
                 }
                 composable("leagues") {
                     val leagueListViewModel = koinViewModel<LeagueListViewModel>()
@@ -114,7 +114,5 @@ fun OnboardingScreen(
 @PreviewLightDark
 @Composable
 fun OnboardPreview() {
-    UpperSportsTheme {
-        OnboardingScreen()
-    }
+    UpperSportsTheme { OnboardingScreen() }
 }

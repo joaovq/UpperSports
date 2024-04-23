@@ -5,12 +5,10 @@ import br.com.joaovq.uppersports.core.di.coreModule
 import br.com.joaovq.uppersports.data.di.dataModule
 import br.com.joaovq.uppersports.league.domain.di.leagueDomainModule
 import br.com.joaovq.uppersports.league.presentation.di.leaguePresentationModule
-import kotlinx.coroutines.Dispatchers
+import br.com.joaovq.uppersports.onboarding.di.onboardingPresentationModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
-import org.koin.core.extension.coroutinesEngine
-import org.koin.core.lazyModules
 import timber.log.Timber
 
 class UpperSportsApp : Application() {
@@ -23,7 +21,8 @@ class UpperSportsApp : Application() {
                 coreModule,
                 dataModule,
                 leagueDomainModule,
-                leaguePresentationModule
+                leaguePresentationModule,
+                onboardingPresentationModule
             )
         }
         if (BuildConfig.DEBUG) Timber.plant(Timber.DebugTree())
