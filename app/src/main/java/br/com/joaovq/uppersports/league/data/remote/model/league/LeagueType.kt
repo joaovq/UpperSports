@@ -1,4 +1,4 @@
-package br.com.joaovq.uppersports.league.data.remote.model
+package br.com.joaovq.uppersports.league.data.remote.model.league
 
 import com.google.gson.annotations.SerializedName
 

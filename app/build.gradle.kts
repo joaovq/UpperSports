@@ -107,8 +107,8 @@ dependencies {
     testImplementation("io.ktor:ktor-client-mock:$ktorVersion")
     implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-serialization-gson:$ktorVersion")
-   /* implementation("io.ktor:ktor-client-logging:$ktorVersion")
-    implementation("ch.qos.logback:logback-classic:1.5.4")*/
+    /* implementation("io.ktor:ktor-client-logging:$ktorVersion")
+     implementation("ch.qos.logback:logback-classic:1.5.4")*/
     implementation("io.coil-kt:coil-compose:2.6.0")
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
 
@@ -130,4 +130,5 @@ dependencies {
     implementation("androidx.paging:paging-runtime-ktx:$paging_version")
     implementation("androidx.paging:paging-compose:3.2.1")
 
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
 }

@@ -6,6 +6,8 @@ import br.com.joaovq.uppersports.data.di.dataModule
 import br.com.joaovq.uppersports.league.domain.di.leagueDomainModule
 import br.com.joaovq.uppersports.league.presentation.di.leaguePresentationModule
 import br.com.joaovq.uppersports.onboarding.di.onboardingPresentationModule
+import br.com.joaovq.uppersports.team.di.teamModule
+import br.com.joaovq.uppersports.ui.di.presentationModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -19,7 +21,9 @@ class UpperSportsApp : Application() {
             androidContext(applicationContext)
             modules(
                 coreModule,
+                presentationModule,
                 dataModule,
+                teamModule,
                 leagueDomainModule,
                 leaguePresentationModule,
                 onboardingPresentationModule

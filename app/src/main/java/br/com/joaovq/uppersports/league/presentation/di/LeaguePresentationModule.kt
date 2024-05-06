@@ -10,6 +10,6 @@ val leaguePresentationModule = module {
         LeagueListViewModel(get())
     }
     viewModel {
-        LeagueDetailViewModel(get())
+        LeagueDetailViewModel(get(), get())
     }
 }

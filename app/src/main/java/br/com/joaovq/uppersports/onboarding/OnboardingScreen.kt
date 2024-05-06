@@ -3,7 +3,6 @@ package br.com.joaovq.uppersports.onboarding
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.DismissibleNavigationDrawer
@@ -33,7 +32,6 @@ import br.com.joaovq.uppersports.ui.theme.UpperSportsTheme
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnboardingScreen(
     modifier: Modifier = Modifier,
@@ -85,8 +83,9 @@ fun OnboardingScreen(
                     val viewModel = koinViewModel<FixturesViewModel>()
                     val isLoading by viewModel.isLoading.collectAsState()
                     HomeScreen(
+                        modifier = Modifier.padding(innerPadding),
                         isLoading = isLoading,
-                        fixtureResponse = viewModel.fixtureResponse
+                        fixtures = viewModel.fixtureResponse
                     )
                 }
                 composable("leagues") {

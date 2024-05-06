@@ -1,11 +1,16 @@
 package br.com.joaovq.uppersports.league.presentation.compose
 
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -18,6 +23,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,24 +40,31 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import br.com.joaovq.uppersports.R
-import br.com.joaovq.uppersports.league.data.remote.model.LeagueResponse
+import br.com.joaovq.uppersports.league.data.remote.model.league.LeagueResponse
+import br.com.joaovq.uppersports.league.data.remote.model.standings.Standing
+import br.com.joaovq.uppersports.league.presentation.event.LeagueDetailEvent
 import br.com.joaovq.uppersports.ui.theme.LocalSpacing
 import br.com.joaovq.uppersports.ui.theme.UpperSportsTheme
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun LeagueDetailsScreen(
     modifier: Modifier = Modifier,
     league: LeagueResponse? = null,
-    onPopNavigate: () -> Unit
+    standingsResponse: List<Standing>? = null,
+    onPopNavigate: () -> Unit,
+    onEvent: (LeagueDetailEvent) -> Unit = {}
 ) {
     val spacing = LocalSpacing.current
     val currentSeason by remember(league) {
-        derivedStateOf {
-            league?.seasons?.find { it.current }
-        }
+        derivedStateOf { league?.seasons?.find { it.current } }
+    }
+    var selectedTabIndex: Int by remember { mutableStateOf(0) }
+    val tabs = buildList {
+        add("All")
+        add("Table")
     }
     Scaffold(
         modifier = modifier,
@@ -109,13 +122,6 @@ fun LeagueDetailsScreen(
                     },
                     style = MaterialTheme.typography.labelMedium
                 )
-                var selectedTabIndex: Int by remember {
-                    mutableStateOf(0)
-                }
-                val tabs = buildList {
-                    add("All")
-                    add("News")
-                }
                 PrimaryTabRow(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -137,15 +143,58 @@ fun LeagueDetailsScreen(
             }
         }
     ) {
-        LazyColumn(modifier = Modifier.padding(it)) {
-            /*items(league?.seasons.orEmpty()) { season ->
-                Row {
-                    Text(text = season.year.toString())
-                    Text(text = season.current.toString())
-                }
-            }*/
-            item {
+        when (selectedTabIndex) {
+            0 -> {
+                LazyColumn(modifier = Modifier.padding(it)) {
+                    item {
 
+                    }
+                }
+            }
+
+            1 -> {
+                LaunchedEffect(selectedTabIndex) {
+                    when (selectedTabIndex) {
+                        1 -> onEvent(LeagueDetailEvent.GetStandings(currentSeason?.year ?: 0))
+                    }
+                }
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(it)
+                ) {
+                    stickyHeader {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(spacing.small),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(text = "Rank")
+                            Text(text = "Points")
+                        }
+                    }
+                    items(standingsResponse.orEmpty()) { standing ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(spacing.small),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Row(horizontalArrangement = Arrangement.spacedBy(spacing.small)) {
+                                Text(text = standing.rank.toString())
+                                AsyncImage(
+                                    modifier = Modifier.size(20.dp),
+                                    model = ImageRequest.Builder(LocalContext.current)
+                                        .data(standing.team.logo).build(),
+                                    contentDescription = null
+                                )
+                                Text(text = standing.team.name)
+                            }
+                            Text(text = standing.points.toString())
+                        }
+                    }
+                }
             }
         }
     }
@@ -155,7 +204,7 @@ fun LeagueDetailsScreen(
 @Composable
 fun LeagueDetailsPreview() {
     UpperSportsTheme {
-        LeagueDetailsScreen {}
+        LeagueDetailsScreen(onEvent = {}, onPopNavigate = {})
     }
 }
 

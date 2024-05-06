@@ -40,10 +40,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import br.com.joaovq.uppersports.league.data.remote.model.Country
-import br.com.joaovq.uppersports.league.data.remote.model.League
-import br.com.joaovq.uppersports.league.data.remote.model.LeagueResponse
-import br.com.joaovq.uppersports.league.data.remote.model.LeagueType
+import br.com.joaovq.uppersports.league.data.remote.model.league.Country
+import br.com.joaovq.uppersports.league.data.remote.model.league.League
+import br.com.joaovq.uppersports.league.data.remote.model.league.LeagueResponse
+import br.com.joaovq.uppersports.league.data.remote.model.league.LeagueType
 import br.com.joaovq.uppersports.league.presentation.event.LeagueListEvent
 import br.com.joaovq.uppersports.league.presentation.state.LeagueListState
 import br.com.joaovq.uppersports.ui.theme.LocalSpacing

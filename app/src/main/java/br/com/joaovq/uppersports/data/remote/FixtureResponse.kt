@@ -1,18 +1,16 @@
 package br.com.joaovq.uppersports.data.remote
 
-import com.google.gson.annotations.SerializedName
-
 data class FixtureResponse(
     val fixture: Fixture,
     val goals: Goals,
-    val league: League,
+    val league: FixtureLeague,
     val score: Score,
     val teams: Teams
 )
 
 data class Fixture(
     val date: String,
-    val id: Int,
+    val id: Int?,
     val periods: Periods,
     val referee: Any,
     val status: Status,
@@ -22,80 +20,78 @@ data class Fixture(
 )
 
 data class Goals(
-    val away: Int,
-    val home: Int
+    val away: Int?,
+    val home: Int?
 )
 
-data class League(
+data class FixtureLeague(
     val country: String,
     val flag: String,
-    val id: Int,
+    val id: Int?,
     val logo: String,
     val name: String,
     val round: String,
-    val season: Int
+    val season: Int?
 )
 
 data class Score(
-    @SerializedName("extratime")
-    val extraTime: ExtraTime,
-    @SerializedName("fulltime")
-    val fullTime: FullTime,
+    val extratime: Extratime,
+    val fulltime: Fulltime,
     val halftime: Halftime,
     val penalty: Penalty
 )
 
 data class Teams(
-    val away: AwayTeam,
-    val home: HomeTeam
+    val away: Away,
+    val home: Home
 )
 
 data class Periods(
-    val first: Int,
-    val second: Any
+    val first: Int?,
+    val second: Int?
 )
 
 data class Status(
-    val elapsed: Int,
+    val elapsed: Int?,
     val long: String,
     val short: String
 )
 
 data class Venue(
     val city: String,
-    val id: Int,
+    val id: Int?,
     val name: String
 )
 
-data class ExtraTime(
-    val away: Int,
-    val home: Int
+data class Extratime(
+    val away: Int?,
+    val home: Int?
 )
 
-data class FullTime(
-    val away: Int,
-    val home: Int
+data class Fulltime(
+    val away: Int?,
+    val home: Int?
 )
 
 data class Halftime(
-    val away: Int,
-    val home: Int
+    val away: Int?,
+    val home: Int?
 )
 
 data class Penalty(
-    val away: Int,
+    val away: Int?,
     val home: Int
 )
 
-data class AwayTeam(
-    val id: Int,
+data class Away(
+    val id: Int?,
     val logo: String,
     val name: String,
     val winner: Boolean
 )
 
-data class HomeTeam(
-    val id: Int,
+data class Home(
+    val id: Int?,
     val logo: String,
     val name: String,
     val winner: Boolean

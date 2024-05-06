@@ -8,7 +8,7 @@ data class PaginatedResponse<out T>(
     val route: String,
     val paging: Paging,
     /*val parameters: String,*/
-    val response: List<T>,
+    val response: T,
     val results: Int
 )
 

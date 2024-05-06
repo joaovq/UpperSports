@@ -8,8 +8,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.joaovq.uppersports.core.utils.http.NetworkResponse
 import br.com.joaovq.uppersports.data.remote.PaginatedResponse
-import br.com.joaovq.uppersports.league.data.remote.model.LeagueResponse
-import br.com.joaovq.uppersports.league.data.remote.model.LeagueType
+import br.com.joaovq.uppersports.league.data.remote.model.league.LeagueResponse
+import br.com.joaovq.uppersports.league.data.remote.model.league.LeagueType
 import br.com.joaovq.uppersports.league.domain.usecase.GetAllLeagues
 import br.com.joaovq.uppersports.league.presentation.event.LeagueListEvent
 import br.com.joaovq.uppersports.league.presentation.state.LeagueListState
@@ -25,7 +25,7 @@ class LeagueListViewModel(
     private val log = Timber.tag(this::class.java.simpleName)
 
     var state by mutableStateOf(LeagueListState())
-    var paginatedLeagueResponse by mutableStateOf<PaginatedResponse<LeagueResponse>?>(null)
+    var paginatedLeagueResponse by mutableStateOf<PaginatedResponse<List<LeagueResponse>>?>(null)
         private set
 
     var isLoading by mutableStateOf(false)

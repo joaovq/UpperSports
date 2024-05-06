@@ -3,8 +3,8 @@ package br.com.joaovq.uppersports.league.domain.usecase
 import br.com.joaovq.uppersports.core.utils.http.NetworkResponse
 import br.com.joaovq.uppersports.data.remote.ApiSportsService
 import br.com.joaovq.uppersports.data.remote.PaginatedResponse
-import br.com.joaovq.uppersports.league.data.remote.model.LeagueResponse
-import br.com.joaovq.uppersports.league.data.remote.model.LeagueType
+import br.com.joaovq.uppersports.league.data.remote.model.league.LeagueResponse
+import br.com.joaovq.uppersports.league.data.remote.model.league.LeagueType
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -16,7 +16,7 @@ class GetAllLeagues(
     suspend operator fun invoke(
         search: String = "",
         type: LeagueType? = null
-    ): NetworkResponse<PaginatedResponse<LeagueResponse>> =
+    ): NetworkResponse<PaginatedResponse<List<LeagueResponse>>> =
         withContext(coroutineDispatcher) {
             apiSportsService.getAllLeagues(search, type)
         }
