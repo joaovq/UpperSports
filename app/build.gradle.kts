@@ -4,6 +4,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
+    kotlin("plugin.serialization") version "1.9.10"
 }
 
 val properties = Properties()
@@ -131,4 +132,6 @@ dependencies {
     implementation("androidx.paging:paging-compose:3.2.1")
 
     implementation("androidx.datastore:datastore-preferences:1.1.1")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 }
