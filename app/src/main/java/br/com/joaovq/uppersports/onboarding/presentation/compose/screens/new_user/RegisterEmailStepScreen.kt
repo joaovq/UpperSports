@@ -1,5 +1,6 @@
 package br.com.joaovq.uppersports.onboarding.presentation.compose.screens.new_user
 
+import android.util.Patterns
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,6 +18,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -24,6 +26,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import br.com.joaovq.uppersports.team.presentation.components.WelcomeTextField
 import br.com.joaovq.uppersports.ui.components.NavigationBackIconButton
 import br.com.joaovq.uppersports.ui.theme.LocalSpacing
+import br.com.joaovq.uppersports.ui.utils.rememberLauncherFocusRequester
 
 @Composable
 fun RegisterEmailStepScreen(
@@ -34,6 +37,7 @@ fun RegisterEmailStepScreen(
     onComplete: () -> Unit = {}
 ) {
     val spacing = LocalSpacing.current
+    val focusRequester = rememberLauncherFocusRequester()
     @OptIn(ExperimentalMaterial3Api::class)
     Scaffold(
         modifier = modifier.imePadding(),
@@ -76,6 +80,7 @@ fun RegisterEmailStepScreen(
                     )
                 }
                 WelcomeTextField(
+                    modifier = Modifier.focusRequester(focusRequester),
                     value = email,
                     onValueChange = onEmailChange,
                     placeholder = {
@@ -84,7 +89,8 @@ fun RegisterEmailStepScreen(
                     keyboardOptions = KeyboardOptions(
                         imeAction = ImeAction.Next,
                         keyboardType = KeyboardType.Email
-                    )
+                    ),
+                    isError = !email.text.matches(Patterns.EMAIL_ADDRESS.toRegex())
                 )
                 Button(
                     modifier = Modifier
@@ -92,7 +98,7 @@ fun RegisterEmailStepScreen(
                         .padding(spacing.small),
                     onClick = onComplete,
                     shape = MaterialTheme.shapes.medium,
-                    enabled = email.text.isNotBlank()
+                    enabled = email.text.isNotBlank() && email.text.matches(Patterns.EMAIL_ADDRESS.toRegex())
                 ) {
                     Text(
                         modifier = Modifier.padding(spacing.small),

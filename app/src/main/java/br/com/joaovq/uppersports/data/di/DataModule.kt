@@ -1,6 +1,9 @@
 package br.com.joaovq.uppersports.data.di
 
 import br.com.joaovq.uppersports.data.remote.ApiSportsService
+import br.com.joaovq.uppersports.data.remote.FirebaseAuthService
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.HttpRequestRetry
@@ -41,7 +44,7 @@ val dataModule = module {
         }
     }
 
-    single {
-        ApiSportsService(get())
-    }
+    single { Firebase.auth }
+    single { ApiSportsService(get()) }
+    single { FirebaseAuthService(get()) }
 }

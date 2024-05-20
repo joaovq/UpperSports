@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "374118570334",
+    "project_id": "uppersports-7fe6b",
+    "storage_bucket": "uppersports-7fe6b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:374118570334:android:4de28dc3e59ffd0e3d17cf",
+        "android_client_info": {
+          "package_name": "br.com.joaovq.uppersports"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvUVWn4E-uXa5myk0tnIHeUz9RGOqR7ko"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -16,11 +16,13 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import br.com.joaovq.uppersports.team.presentation.components.WelcomeTextField
 import br.com.joaovq.uppersports.ui.components.NavigationBackIconButton
 import br.com.joaovq.uppersports.ui.theme.LocalSpacing
+import br.com.joaovq.uppersports.ui.utils.rememberLauncherFocusRequester
 
 @Composable
 fun RegisterNameStepScreen(
@@ -31,6 +33,7 @@ fun RegisterNameStepScreen(
     onComplete: () -> Unit = {}
 ) {
     val spacing = LocalSpacing.current
+    val focusRequester = rememberLauncherFocusRequester()
     @OptIn(ExperimentalMaterial3Api::class)
     Scaffold(
         modifier = modifier.imePadding(),
@@ -48,7 +51,8 @@ fun RegisterNameStepScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(it), contentAlignment = Alignment.Center
+                .padding(it),
+            contentAlignment = Alignment.Center
         ) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
@@ -74,6 +78,7 @@ fun RegisterNameStepScreen(
                 }
 
                 WelcomeTextField(
+                    modifier = Modifier.focusRequester(focusRequester),
                     value = name,
                     onValueChange = onNameChange,
                     placeholder = {

@@ -15,4 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "UpperSports"
 include(":app")
- 
+include(":app:baselineprofile")

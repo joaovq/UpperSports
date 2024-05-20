@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.VisualTransformation
 import br.com.joaovq.uppersports.ui.theme.LocalSpacing
 
 @Composable
@@ -19,7 +20,11 @@ fun WelcomeTextField(
     value: TextFieldValue = TextFieldValue(),
     onValueChange: (TextFieldValue) -> Unit = {},
     placeholder: @Composable () -> Unit,
-    keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Search)
+    keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+    isError: Boolean = false,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    trailingIcon: @Composable () -> Unit = {},
+    enabled: Boolean = true
 ) {
     val spacing = LocalSpacing.current
     TextField(
@@ -36,6 +41,10 @@ fun WelcomeTextField(
             unfocusedIndicatorColor = Color.Transparent,
             focusedIndicatorColor = Color.Transparent,
         ),
-        keyboardOptions = keyboardOptions
+        keyboardOptions = keyboardOptions,
+        isError = isError,
+        visualTransformation = visualTransformation,
+        trailingIcon = trailingIcon,
+        enabled = enabled
     )
 }

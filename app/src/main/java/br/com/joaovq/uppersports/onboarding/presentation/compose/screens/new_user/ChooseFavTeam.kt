@@ -21,8 +21,6 @@ import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
@@ -31,10 +29,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextMotion
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import br.com.joaovq.uppersports.R
 import br.com.joaovq.uppersports.onboarding.presentation.viewmodel.ChooseTeamState
 import br.com.joaovq.uppersports.team.domain.model.Team
 import br.com.joaovq.uppersports.team.presentation.components.GridSelectorTeams
+import br.com.joaovq.uppersports.team.presentation.components.TeamsPreviewProvider
 import br.com.joaovq.uppersports.team.presentation.components.WelcomeTextField
 import br.com.joaovq.uppersports.ui.theme.Inter
 import br.com.joaovq.uppersports.ui.theme.LocalSpacing
@@ -45,14 +45,15 @@ import br.com.joaovq.uppersports.ui.theme.UpperSportsTheme
 fun ChooseFavTeamScreen(
     modifier: Modifier = Modifier,
     teams: List<Team> = listOf(),
-    selectedTeams: List<Team> = listOf(),
     state: ChooseTeamState = ChooseTeamState(),
+    onSelectedTeam: (Team) -> Unit = {},
+    onRemoveTeam: (Team) -> Unit = {},
     onPopBackStack: () -> Unit = {},
     onNextStep: (selectedTeams: List<Team>) -> Unit = {},
-    onQueryChange: (TextFieldValue) -> Unit = {}
+    onQueryChange: (TextFieldValue) -> Unit = {},
+    onClearSelectedTeams: () -> Unit = {}
 ) {
     val spacing = LocalSpacing.current
-    val selectedTeamsState = remember { mutableStateListOf<Team>().apply { addAll(selectedTeams) } }
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -89,9 +90,9 @@ fun ChooseFavTeamScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(spacing.small),
-                onClick = { onNextStep(selectedTeamsState.toList()) },
+                onClick = { onNextStep(state.selectedTeams) },
                 shape = MaterialTheme.shapes.medium,
-                enabled = selectedTeamsState.isNotEmpty()
+                enabled = state.selectedTeams.isNotEmpty()
             ) {
                 Text(
                     modifier = Modifier.padding(spacing.small),
@@ -109,13 +110,13 @@ fun ChooseFavTeamScreen(
                         Text(text = "Search...")
                     }
                 )
-                AnimatedVisibility(visible = selectedTeamsState.isNotEmpty()) {
+                AnimatedVisibility(visible = state.selectedTeams.isNotEmpty()) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = spacing.small, horizontal = spacing.default)
                             .pointerInput(Unit) {
-                                detectTapGestures(onTap = { selectedTeamsState.clear() })
+                                detectTapGestures(onTap = { onClearSelectedTeams() })
                             },
                         horizontalArrangement = Arrangement.spacedBy(spacing.small)
                     ) {
@@ -125,7 +126,9 @@ fun ChooseFavTeamScreen(
                 }
                 GridSelectorTeams(
                     teams = teams,
-                    selectedTeams = selectedTeamsState
+                    selectedTeams = state.selectedTeams,
+                    onSelectedTeam = onSelectedTeam,
+                    onRemoveTeam = onRemoveTeam
                 )
             }
         }
@@ -134,8 +137,8 @@ fun ChooseFavTeamScreen(
 
 @Preview
 @Composable
-fun ChooseFavTeamPreview() {
-    UpperSportsTheme {
-        ChooseFavTeamScreen()
-    }
+fun ChooseFavTeamPreview(
+    @PreviewParameter(TeamsPreviewProvider::class) teams: List<Team>
+) {
+    UpperSportsTheme { ChooseFavTeamScreen(teams = teams) }
 }

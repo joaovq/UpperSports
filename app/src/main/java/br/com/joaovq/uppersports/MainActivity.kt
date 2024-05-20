@@ -21,25 +21,35 @@ import br.com.joaovq.uppersports.ui.presentation.MainViewModel
 import br.com.joaovq.uppersports.ui.theme.UpperSportsTheme
 import org.koin.android.ext.android.inject
 import org.koin.compose.KoinContext
+import timber.log.Timber
 
 class MainActivity : ComponentActivity() {
     private val mainViewModel by inject<MainViewModel>()
+    private val log = Timber.tag(this::class.java.simpleName)
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        splashScreen.setKeepOnScreenCondition { mainViewModel.isLoading }
         setContent {
             val navController = rememberNavController()
             val isNewUser by mainViewModel.isNewUser.collectAsState()
-            val startDestination by remember(isNewUser) {
+            log.d("Is new user: $isNewUser")
+            val startDestination by remember(
+                mainViewModel.isLoading,
+                isNewUser,
+                mainViewModel.currentUser
+            ) {
                 derivedStateOf {
-                    if (isNewUser) "new-user-graph" else "onboarding-graph"
+                    when {
+                        isNewUser -> "new-user-graph"
+                        mainViewModel.currentUser == null -> "login-graph"
+                        else -> "onboarding-graph"
+                    }
                 }
             }
             KoinContext {
-                UpperSportsTheme(
-                    dynamicColor = false
-                ) {
+                UpperSportsTheme(dynamicColor = false) {
                     Surface(
                         modifier = Modifier
                             .fillMaxSize(),

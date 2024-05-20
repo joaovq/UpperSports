@@ -21,38 +21,47 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import br.com.joaovq.uppersports.team.domain.model.Team
 import br.com.joaovq.uppersports.ui.theme.LocalSpacing
 import br.com.joaovq.uppersports.ui.theme.UpperSportsTheme
+import timber.log.Timber
 
 @Composable
 fun GridSelectorTeams(
     modifier: Modifier = Modifier,
     teams: List<Team>,
-    selectedTeams: SnapshotStateList<Team>
+    selectedTeams: List<Team>,
+    onSelectedTeam: (Team) -> Unit = {},
+    onRemoveTeam: (Team) -> Unit = {}
 ) {
+    val log = Timber.tag("GridSelectorTeams")
     val spacing = LocalSpacing.current
+    val unselectedTeams by remember(teams, selectedTeams) {
+        derivedStateOf {
+            /*val referenceIds = selectedTeams.distinctBy { it.id }.map { it.id }.toSet()
+            log.d("Reference Ids $referenceIds")
+            teams.filterNot { it.id in referenceIds }*/
+            teams - selectedTeams.toSet()
+        }
+    }
     LazyVerticalGrid(
         modifier = modifier
             .fillMaxSize()
             .padding(spacing.small),
         columns = GridCells.Fixed(2),
     ) {
-        /*TODO put selected teams in top*/
-        items(teams, key = { it.id }) { team ->
-            val selectedTeam by remember(selectedTeams) {
-                derivedStateOf {
-                    selectedTeams.contains(team)
-                }
-            }
+        items(selectedTeams) { team ->
             SelectorTeamCard(
                 modifier = Modifier.padding(spacing.small),
-                isSelected = selectedTeam,
-                team = team
-            ) {
-                if (selectedTeam) {
-                    selectedTeams.remove(team)
-                } else {
-                    selectedTeams.add(team)
-                }
-            }
+                isSelected = true,
+                team = team,
+                onClick = onRemoveTeam
+            )
+        }
+        items(unselectedTeams.toList(), key = { it.id }) { team ->
+            SelectorTeamCard(
+                modifier = Modifier.padding(spacing.small),
+                isSelected = false,
+                team = team,
+                onClick = onSelectedTeam
+            )
         }
         item {
             Spacer(
@@ -69,7 +78,11 @@ fun GridSelectorTeamsPreview(
     @PreviewParameter(TeamsPreviewProvider::class) teams: List<Team>
 ) {
     UpperSportsTheme {
-        GridSelectorTeams(teams = teams, selectedTeams = SnapshotStateList())
+        GridSelectorTeams(
+            teams = teams,
+            selectedTeams = SnapshotStateList(),
+            onSelectedTeam = {}
+        )
     }
 }
 
