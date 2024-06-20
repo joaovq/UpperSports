@@ -9,8 +9,9 @@ import br.com.joaovq.uppersports.data.local.UserRepository
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
@@ -19,16 +20,23 @@ import kotlinx.coroutines.launch
 class MainViewModel(private val userRepository: UserRepository) : ViewModel() {
 
     val currentUser = Firebase.auth.currentUser
-    var isLoading by mutableStateOf(false)
+    var state by mutableStateOf(NavState.IDLE)
         private set
     val isNewUser = userRepository.getIsNewUser()
-        .onStart { isLoading = true }
-        .onCompletion { isLoading = false }
+        .onStart { state = NavState.LOADING }
+        .onCompletion { state = NavState.FINISHED }
         .stateIn(
             viewModelScope,
-            SharingStarted.WhileSubscribed(5_000),
-            true
+            SharingStarted.WhileSubscribed(1_000),
+            false
         )
+    var startDestination: StateFlow<String?> = isNewUser.map { isNewUser ->
+        when {
+            isNewUser -> "new-user-graph"
+            currentUser == null -> "login-graph"
+            else -> "onboarding-graph"
+        }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
 
     fun checkIsNewUser() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -39,4 +47,10 @@ class MainViewModel(private val userRepository: UserRepository) : ViewModel() {
             }
         }
     }
+}
+
+enum class NavState {
+    IDLE,
+    LOADING,
+    FINISHED
 }

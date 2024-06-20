@@ -22,7 +22,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import br.com.joaovq.uppersports.league.presentation.components.OnboardingDrawerSheet
+import br.com.joaovq.uppersports.onboarding.presentation.compose.components.OnboardingDrawerSheet
 import br.com.joaovq.uppersports.league.presentation.compose.LeagueListScreen
 import br.com.joaovq.uppersports.league.presentation.viewmodel.LeagueListViewModel
 import br.com.joaovq.uppersports.onboarding.presentation.compose.screens.HomeScreen

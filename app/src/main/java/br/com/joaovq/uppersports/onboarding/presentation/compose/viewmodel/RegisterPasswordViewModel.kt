@@ -34,6 +34,8 @@ class RegisterPasswordViewModel(
     val authResult = _authResult.asStateFlow()
     var isLoading by mutableStateOf(false)
         private set
+    var error: String? by mutableStateOf(null)
+        private set
 
     fun onChangePassword(value: TextFieldValue) {
         password = value
@@ -46,7 +48,9 @@ class RegisterPasswordViewModel(
                 firebaseAuthService.createAccount(name, email, password).onEach { response ->
                     when (response) {
                         is AuthResponse.Error -> {
-                            log.e("Error message: %s", response.ex.message.toString())
+                            val errorMessage = response.ex.message
+                            log.e("Error message: %s", errorMessage.toString())
+                            error = errorMessage
                         }
 
                         is AuthResponse.Success -> {

@@ -8,6 +8,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -20,12 +21,19 @@ import br.com.joaovq.uppersports.onboarding.presentation.compose.screens.new_use
 import br.com.joaovq.uppersports.onboarding.presentation.compose.viewmodel.RegisterPasswordViewModel
 import br.com.joaovq.uppersports.onboarding.presentation.viewmodel.ChooseTeamViewModel
 import br.com.joaovq.uppersports.onboarding.presentation.viewmodel.WelcomeViewModel
+import org.koin.androidx.compose.defaultExtras
 import org.koin.androidx.compose.koinViewModel
+import org.koin.androidx.compose.navigation.koinNavViewModel
+import org.koin.compose.rememberCurrentKoinScope
 import timber.log.Timber
 
 fun NavGraphBuilder.welcomeGraph(navController: NavController) {
     navigation("choose-fav-team", "new-user-graph") {
         composable("new-user") { backStackEntry ->
+            val viewModelStoreOwner = LocalViewModelStoreOwner.current
+            checkNotNull(viewModelStoreOwner) {
+                "No ViewModelStoreOwner was provided via LocalViewModelStoreOwner"
+            }
             val viewModel = viewModel<WelcomeViewModel>(LocalContext.current as ComponentActivity)
             RegisterNameStepScreen(
                 name = viewModel.name,
@@ -58,8 +66,9 @@ fun NavGraphBuilder.welcomeGraph(navController: NavController) {
                 },
             )
         }
-        composable("email-user") { _ ->
-            val viewModel = viewModel<WelcomeViewModel>(LocalContext.current as ComponentActivity)
+        composable("email-user") { backStackEntry ->
+            val viewModel =
+                viewModel<WelcomeViewModel>(LocalContext.current as ComponentActivity)
             RegisterEmailStepScreen(
                 email = viewModel.email,
                 onPopBackStack = navController::popBackStack,
@@ -69,7 +78,7 @@ fun NavGraphBuilder.welcomeGraph(navController: NavController) {
                 }
             )
         }
-        composable("password-user") { _ ->
+        composable("password-user") { backStackEntry ->
             val log = Timber.tag("Password_user_route")
             val viewModel = koinViewModel<RegisterPasswordViewModel>()
             val sharedViewModel =
@@ -97,7 +106,8 @@ fun NavGraphBuilder.welcomeGraph(navController: NavController) {
                         sharedViewModel.email.text
                     )
                 },
-                isLoading = viewModel.isLoading
+                isLoading = viewModel.isLoading,
+                error = viewModel.error
             )
         }
     }

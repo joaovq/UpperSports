@@ -101,6 +101,7 @@ dependencies {
     implementation("io.insert-koin:koin-compose")
     implementation("io.insert-koin:koin-androidx-compose")
     implementation("io.insert-koin:koin-androidx-compose-navigation")
+    implementation("io.insert-koin:koin-androidx-workmanager")
     // Works with test libraries too!
     testImplementation("io.insert-koin:koin-test-junit4")
     testImplementation("io.insert-koin:koin-android-test")
@@ -130,10 +131,10 @@ dependencies {
     // optional - Paging 3 Integration
     implementation("androidx.room:room-paging:$roomVersion")
 
-    val pagingVersion = "3.2.1"
+    val pagingVersion = "3.3.0"
 
     implementation("androidx.paging:paging-runtime-ktx:$pagingVersion")
-    implementation("androidx.paging:paging-compose:3.2.1")
+    implementation("androidx.paging:paging-compose:$pagingVersion")
 
     implementation("androidx.datastore:datastore-preferences:1.1.1")
 
@@ -143,4 +144,10 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-config")
+
+    val workVersion = "2.9.0"
+    // Kotlin + coroutines
+    implementation("androidx.work:work-runtime-ktx:$workVersion")
+    androidTestImplementation("androidx.work:work-testing:$workVersion")
 }
